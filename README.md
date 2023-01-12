@@ -10,7 +10,7 @@ The tests are creating a proxy of a class using ByteBuddy (generate the extendin
 * `StandardTest` is just a normal test
 * `PowerMockTest` is using a PowerMock running which plays with class loader to allow bytecode instrumentation
 
-Then we are trying to mock `Timestamp` and `JTable`.
+Then we are trying to mock `Timestamp` and `BoxLayout`.
 Both classes are from the JDK but one is in the `java` package and the other in the `javax` package.
 
 And we try permutations of these two things:
@@ -19,23 +19,26 @@ And we try permutations of these two things:
 
 Results are
 
-| Type       | Class      | Same Package | Same Class loader | Result                                                                                                                                     |
-|------------|------------|--------------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| Standard   | JTable     | Yes          | Yes               | It works                                                                                                                                   |
-| Standard   | JTable     | Yes          | No                | It works                                                                                                                                   |
-| Standard   | JTable     | No           | Yes               | It works                                                                                                                                   |
-| Standard   | JTable     | No           | No                | It works                                                                                                                                   |
-| Standard   | Timestamp  | Yes          | Yes               | It works                                                                                                                                   |
-| Standard   | Timestamp  | Yes          | No                | SecurityException: [...]] 'app' tried to load prohibited package name: java.sql                                                            |
-| Standard   | Timestamp  | No           | Yes               | It works                                                                                                                                   |
-| Standard   | Timestamp  | No           | No                | It works                                                                                                                                   |
-| PowerMock  | JTable     | Yes          | Yes               | LinkageError: loader constraint violation in interface itable initialization for class [...]                                               |
-| PowerMock  | JTable     | Yes          | No                | NoClassDefFoundError: Could not initialize class javax.swing.JTable$$$MyThing                                                              |
-| PowerMock  | JTable     | No           | Yes               | NoClassDefFoundError: Could not initialize class javax.swing.JTable                                                                        |
-| PowerMock  | JTable     | No           | No                | NoClassDefFoundError: Could not initialize class pro.tremblay.accessdenied.internal.JTable$$$MyThing                                       |
-| PowerMock  | Timestamp  | Yes          | Yes               | It works                                                                                                                                   |
-| PowerMock  | Timestamp  | Yes          | No                | SecurityException: [...] org.powermock.core.classloader.javassist.JavassistMockClassLoader tried to load prohibited package name: java.sql |
-| PowerMock  | Timestamp  | No           | Yes               | It works                                                                                                                                   |
-| PowerMock  | Timestamp  | No           | No                | It works                                                                                                                                   |
+| Type       | Class     | Same Package | Same Class loader | Result                                                                          |
+|------------|-----------|--------------|-------------------|---------------------------------------------------------------------------------|
+| Standard   | BoxLayout | Yes          | Yes               | It works                                                                        |
+| Standard   | BoxLayout | Yes          | No                | It works                                                                        |
+| Standard   | BoxLayout | No           | Yes               | It works                                                                        |
+| Standard   | BoxLayout | No           | No                | It works                                                                        |
+| Standard   | Timestamp | Yes          | Yes               | It works                                                                        |
+| Standard   | Timestamp | Yes          | No                | SecurityException: [...]] 'app' tried to load prohibited package name: java.sql |
+| Standard   | Timestamp | No           | Yes               | It works                                                                        |
+| Standard   | Timestamp | No           | No                | It works                                                                        |
+| PowerMock  | BoxLayout | Yes          | Yes               | It works                                                                        |
+| PowerMock  | BoxLayout | Yes          | No                | It works                                                                        |
+| PowerMock  | BoxLayout | No           | Yes               | It works                                                                        |
+| PowerMock  | BoxLayout | No           | No                | It works                                                                        |
+| PowerMock  | Timestamp | Yes          | Yes               | It works                                                                        |
+| PowerMock  | Timestamp | Yes          | No                | It works                                                                        |
+| PowerMock  | Timestamp | No           | Yes               | It works                                                                        |
+| PowerMock  | Timestamp | No           | No                | It works                                                                        |
 
-What we want is to select the right 
+What we want is to select the right way to instantiate these classes.
+Plus other normal classes like `App.
+
+It feels that we need to kno
