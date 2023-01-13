@@ -1,5 +1,6 @@
 package pro.tremblay.accessdenied;
 
+import org.hamcrest.core.Is;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -73,6 +74,46 @@ public abstract class BaseTest {
     @Test
     public void appThisPackageThisClassLoader() {
         test(App.class, ClassFactory::thisPackage, ClassFactory::thisClassLoader);
+    }
+
+    @Test
+    public void isSamePackageSameClassLoader() {
+        test(Is.class, ClassFactory::samePackage, ClassFactory::sameClassLoader);
+    }
+
+    @Test
+    public void isSamePackageThisClassLoader() {
+        test(Is.class, ClassFactory::samePackage, ClassFactory::thisClassLoader);
+    }
+
+    @Test
+    public void isThisPackageSameClassLoader() {
+        test(Is.class, ClassFactory::thisPackage, ClassFactory::sameClassLoader);
+    }
+
+    @Test
+    public void isThisPackageThisClassLoader() {
+        test(Is.class, ClassFactory::thisPackage, ClassFactory::thisClassLoader);
+    }
+
+    @Test
+    public void appWise() {
+        test(App.class, ClassFactory::wisePackage, ClassFactory::wiseClassLoader);
+    }
+
+    @Test
+    public void boxLayoutWise() {
+        test(BoxLayout.class, ClassFactory::wisePackage, ClassFactory::wiseClassLoader);
+    }
+
+    @Test
+    public void isWise() {
+        test(Is.class, ClassFactory::wisePackage, ClassFactory::wiseClassLoader);
+    }
+
+    @Test
+    public void timestampWise() {
+        test(Timestamp.class, ClassFactory::wisePackage, ClassFactory::wiseClassLoader);
     }
 
     private void test(Class<?> clazz, Function<Class<?>, String> classNameProvider, Function<Class<?>, ClassLoader> classLoaderProvider) {
